@@ -11,5 +11,12 @@
     "url": "?.git"
   },
   "author": "Michael Lekrans",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-util": "^3.0.8"
+  }
 }
