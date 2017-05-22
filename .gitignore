@@ -3,4 +3,3 @@ node_modules
 .tmp
 .sass-cache
 script.1.js
-builds/**/images/*
