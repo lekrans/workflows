@@ -16,6 +16,8 @@ var jsSources = [
 
 var sassSources = ['components/sass/style.scss'];
 
+var htmlSources = ['builds/development/index.html'];
+
 gulp.task('coffee', function() {
   gulp.src(coffeeSources)
     .pipe(coffee({ bare: true })
@@ -43,10 +45,16 @@ gulp.task('compass', function() {
     .pipe(connect.reload())
 });
 
+gulp.task('html', function() {
+  gulp.src(htmlSources)
+  .pipe(connect.reload())
+})
+
 gulp.task('watch', function() {
   gulp.watch(coffeeSources, ['coffee']);
   gulp.watch(jsSources, ['js']);
-  gulp.watch('components/sass/*.scss', ['compass'])
+  gulp.watch('components/sass/*.scss', ['compass']);
+  gulp.watch(htmlSources, ['html'])
 })
 
 gulp.task('connect', function() {
