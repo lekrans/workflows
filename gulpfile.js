@@ -3,20 +3,40 @@ var gulp = require('gulp'),
     coffee = require('gulp-coffee'),
     compass = require('gulp-compass'),
     connect = require('gulp-connect'),
+    gulpif = require('gulp-if'),
+    uglify = require('gulp-uglify'),
     browserify = require('gulp-browserify'),
     concat = require('gulp-concat');
 
-var coffeeSources = ['components/coffee/tagline.coffee'];
-var jsSources = [
+var env, 
+    coffeeSources,
+    jsSources,
+    sassSources,
+    htmlSources,
+    outputDir;
+
+env = 'production';
+console.log( process.env );
+
+console.log(env);
+
+if (env === 'development') {
+  outputDir = 'builds/development/'
+}else{
+  outputDir = 'builds/production/'
+}
+
+coffeeSources = ['components/coffee/tagline.coffee'];
+jsSources = [
   'components/scripts/rclick.js', 
   'components/scripts/pixgrid.js',
   'components/scripts/tagline.js',
   'components/scripts/template.js'
 ];
 
-var sassSources = ['components/sass/style.scss'];
+sassSources = ['components/sass/style.scss'];
 
-var htmlSources = ['builds/development/index.html'];
+htmlSources = ['builds/development/index.html'];
 
 gulp.task('coffee', function() {
   gulp.src(coffeeSources)
@@ -29,7 +49,8 @@ gulp.task('js', ['coffee'], function() {
   gulp.src(jsSources)
     .pipe(concat('script.js'))
     .pipe(browserify())
-    .pipe(gulp.dest('builds/development/js'))
+    .pipe(gulpif(env === 'production', uglify()))
+    .pipe(gulp.dest(outputDir + 'js'))
     .pipe(connect.reload())
 });
 
@@ -41,7 +62,7 @@ gulp.task('compass', function() {
       style: 'expanded'
     }))
     .on('error', gutil.log)
-    .pipe(gulp.dest('builds/development/css'))
+    .pipe(gulp.dest(outputDir + 'css'))
     .pipe(connect.reload())
 });
 
